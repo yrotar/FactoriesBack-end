@@ -1,21 +1,105 @@
 package com.evgen.rest;
 
-
 import com.evgen.Company;
+import com.evgen.Phone;
 import com.evgen.ServiceApi;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @CrossOrigin
 @RestController
 public class CompanyPhoneController {
 
-    @Autowired
+    private final
     ServiceApi service;
 
+    @Autowired
+    public CompanyPhoneController(ServiceApi service) {
+        this.service = service;
+    }
+
+    @GetMapping(value = "/companies")
+    public
+    @ResponseBody
+    List<Company> getCompanies() {
+
+        return service.getCompanies();
+    }
+
     @GetMapping(value = "/companies/{id}")
-    public Company getCompanyById(@PathVariable(value = "id") Integer id) {
+    public
+    @ResponseBody
+    Company getCompanyById(@PathVariable(value = "id") Integer id) {
 
         return service.getCompanyById(id);
+    }
+
+    @RequestMapping(value = "/companies", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    public
+    @ResponseBody
+    Integer addCompany(@RequestBody Company company) {
+
+        return service.addCompany(company);
+    }
+
+    @RequestMapping(value = "/companies", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public
+    @ResponseBody
+    Integer updateCompany(@RequestBody Company company) {
+
+        return service.updateCompany(company);
+    }
+
+    @RequestMapping(value = "/companies/{id}", method = RequestMethod.DELETE)
+    @ResponseStatus(value = HttpStatus.OK)
+    public void deleteCompany(@PathVariable(value = "id") Integer id) {
+
+        service.deleteCompany(id);
+    }
+
+    @GetMapping(value = "/phones")
+    public
+    @ResponseBody
+    List<Phone> getPhones() {
+
+        return service.getPhones();
+    }
+
+    @GetMapping(value = "/phones/{id}")
+    public
+    @ResponseBody
+    Phone getPhoneById(@PathVariable(value = "id") Integer id) {
+
+        return service.getPhoneById(id);
+    }
+
+    @RequestMapping(value = "/phones", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    public
+    @ResponseBody
+    Integer addPhone(@RequestBody Phone phone) {
+
+        return service.addPhone(phone);
+    }
+
+    @RequestMapping(value = "/phones", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public
+    @ResponseBody
+    Integer updatePhone(@RequestBody Phone phone) {
+
+        return service.updatePhone(phone);
+    }
+
+    @RequestMapping(value = "/phones/{id}", method = RequestMethod.DELETE)
+    @ResponseStatus(value = HttpStatus.OK)
+    public void deletePhone(@PathVariable(value = "id") Integer id) {
+
+        service.deletePhone(id);
     }
 }

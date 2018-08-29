@@ -21,7 +21,7 @@ public class Logger {
         String methodName = joinPoint.getSignature().getName();
         Object[] methodArgs = joinPoint.getArgs();
         Thread curThread = Thread.currentThread();
-        LOGGER.info("From Class " + className + " method " + methodName + " was called on thread " + curThread.getName() + " with args " + methodArgs[0]);
+        LOGGER.info("From Class " + className + " method " + methodName + " was called on thread " + curThread.getName() + " with args " + methodArgs);
         Object result =  joinPoint.proceed();
         LOGGER.info("From Class " + className + " method " + methodName + " returned value = " + result + " on thread " + curThread.getName());
 
