@@ -27,6 +27,9 @@ public class DaoImpl implements CompanyPhoneDao {
     @Value("${CompanyPhoneDaoSql.getCompanies}")
     String getCompaniesSql;
 
+    @Value("${CompanyPhoneDaoSql.getCompanyByName}")
+    String getCompanyByNameSql;
+
     @Value("${CompanyPhoneDaoSql.addCompany}")
     String addCompanySql;
 
@@ -35,7 +38,6 @@ public class DaoImpl implements CompanyPhoneDao {
 
     @Value("${CompanyPhoneDaoSql.deleteCompany}")
     String deleteCompanySql;
-
 
     @Value("${CompanyPhoneDaoSql.getPhoneById}")
     String getPhoneByIdSql;
@@ -52,12 +54,9 @@ public class DaoImpl implements CompanyPhoneDao {
     @Value("${CompanyPhoneDaoSql.deletePhones}")
     String deletePhonesSql;
 
-
-
     private static final String COMPANY_ID = "companyId";
     private static final String COMPANY_NAME = "name";
     private static final String COMPANY_EMPLOYESS = "employees";
-
     private static final String PHONE_ID = "phoneId";
     private static final String PHONE_NAME = "name";
     private static final String PHONE_PRICE = "price";
@@ -65,7 +64,6 @@ public class DaoImpl implements CompanyPhoneDao {
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     public DaoImpl(DataSource dataSource) {
-
         namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
@@ -81,6 +79,14 @@ public class DaoImpl implements CompanyPhoneDao {
             Company company = namedParameterJdbcTemplate.queryForObject(getCompanyByIdSql, namedParameters, new CompanyRowMapper());
 
             return company;
+    }
+
+    @Override
+    public Company getCompanyByName(String companyName) throws DataAccessException {
+        SqlParameterSource namedParameters = new MapSqlParameterSource(COMPANY_NAME, companyName);
+        Company company = namedParameterJdbcTemplate.queryForObject(getCompanyByNameSql, namedParameters, new CompanyRowMapper());
+
+        return company;
     }
 
     @Override
@@ -181,7 +187,8 @@ public class DaoImpl implements CompanyPhoneDao {
             Phone phone = new Phone(resultSet.getInt("phone_id"),
                     resultSet.getString("name"),
                     resultSet.getInt("price"),
-                    resultSet.getInt("company_id"));
+                    resultSet.getInt("company_id"),
+                    resultSet.getString("company.name"));
 
             return phone;
         }

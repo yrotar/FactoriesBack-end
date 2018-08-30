@@ -10,6 +10,8 @@ public interface ServiceApi {
 
     Company getCompanyById(Integer companyId) throws DataAccessException;
 
+    Company getCompanyByName(String companyName) throws DataAccessException;
+
     Integer addCompany(Company company) throws DataAccessException;
 
     Integer updateCompany(Company company) throws DataAccessException;

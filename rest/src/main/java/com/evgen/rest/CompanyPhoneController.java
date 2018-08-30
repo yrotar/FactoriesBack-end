@@ -37,6 +37,14 @@ public class CompanyPhoneController {
         return service.getCompanyById(id);
     }
 
+    @GetMapping(value = "/companies/name{name}")
+    public
+    @ResponseBody
+    Company getCompanyByName(@PathVariable(value = "name") String name) {
+
+        return service.getCompanyByName(name);
+    }
+
     @RequestMapping(value = "/companies", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public
@@ -66,7 +74,6 @@ public class CompanyPhoneController {
     public
     @ResponseBody
     List<Phone> getPhones() {
-
         return service.getPhones();
     }
 

@@ -10,6 +10,8 @@ public interface CompanyPhoneDao {
 
     Company getCompanyById(Integer companyId) throws DataAccessException;
 
+    Company getCompanyByName(String companyName) throws DataAccessException;
+
     Integer addCompany(Company company) throws DataAccessException;
 
     Integer updateCompany(Company company) throws DataAccessException;
@@ -25,6 +27,5 @@ public interface CompanyPhoneDao {
     Integer updatePhone(Phone phone) throws DataAccessException;
 
     Integer deletePhone(Integer phoneId) throws DataAccessException;
-
 
 }

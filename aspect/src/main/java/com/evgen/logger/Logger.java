@@ -7,6 +7,8 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
+
 @Aspect
 @Component
 public class Logger {
@@ -21,11 +23,10 @@ public class Logger {
         String methodName = joinPoint.getSignature().getName();
         Object[] methodArgs = joinPoint.getArgs();
         Thread curThread = Thread.currentThread();
-        LOGGER.info("From Class " + className + " method " + methodName + " was called on thread " + curThread.getName() + " with args " + methodArgs);
+        LOGGER.info("From Class " + className + " method " + methodName + " was called on thread " + curThread.getName() + " with args " + Arrays.toString(methodArgs));
         Object result =  joinPoint.proceed();
         LOGGER.info("From Class " + className + " method " + methodName + " returned value = " + result + " on thread " + curThread.getName());
 
         return result;
     }
-
 }

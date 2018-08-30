@@ -20,7 +20,6 @@ public class Company {
         this.employees = employees;
     }
 
-
     public Integer getCompanyId() {
         return companyId;
     }

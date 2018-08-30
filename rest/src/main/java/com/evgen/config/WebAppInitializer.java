@@ -20,5 +20,4 @@ public class WebAppInitializer implements WebApplicationInitializer {
         dispathcer.setLoadOnStartup(1);
         dispathcer.addMapping("/");
     }
-
 }

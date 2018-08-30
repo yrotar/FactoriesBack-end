@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 import java.util.List;
 
@@ -27,6 +28,11 @@ public class ServiceImpl implements ServiceApi {
     public Company getCompanyById(Integer companyId) throws DataAccessException {
 
         return companyPhoneDao.getCompanyById(companyId);
+    }
+
+    public Company getCompanyByName(String companyName) throws DataAccessException {
+
+        return companyPhoneDao.getCompanyByName(companyName);
     }
 
     @Override
