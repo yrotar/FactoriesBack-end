@@ -5,8 +5,10 @@ import com.evgen.Phone;
 import com.evgen.service.ServiceApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 @CrossOrigin
@@ -24,7 +26,11 @@ public class CompanyPhoneController {
     @GetMapping(value = "/companies")
     public
     @ResponseBody
-    List<Company> getCompanies() {
+    List<Company> getCompanies(@RequestParam(value = "name", required = false) String name) {
+
+        if (!StringUtils.isEmpty(name)){
+            return Collections.singletonList(service.getCompanyByName(name));
+        }
 
         return service.getCompanies();
     }
@@ -37,14 +43,6 @@ public class CompanyPhoneController {
         return service.getCompanyById(id);
     }
 
-    @GetMapping(value = "/companies/name{name}")
-    public
-    @ResponseBody
-    Company getCompanyByName(@PathVariable(value = "name") String name) {
-
-        return service.getCompanyByName(name);
-    }
-
     @RequestMapping(value = "/companies", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public
@@ -54,11 +52,12 @@ public class CompanyPhoneController {
         return service.addCompany(company);
     }
 
-    @RequestMapping(value = "/companies", method = RequestMethod.PUT)
+    @RequestMapping(value = "/companies/{id}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public
     @ResponseBody
-    Integer updateCompany(@RequestBody Company company) {
+    Integer updateCompany(@RequestBody Company company, @PathVariable("id") Integer id) {
+        company.setCompanyId(id);
 
         return service.updateCompany(company);
     }
@@ -94,11 +93,12 @@ public class CompanyPhoneController {
         return service.addPhone(phone);
     }
 
-    @RequestMapping(value = "/phones", method = RequestMethod.PUT)
+    @RequestMapping(value = "/phones/{id}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public
     @ResponseBody
-    Integer updatePhone(@RequestBody Phone phone) {
+    Integer updatePhone(@RequestBody Phone phone, @PathVariable("id") Integer id) {
+        phone.setPhoneId(id);
 
         return service.updatePhone(phone);
     }
