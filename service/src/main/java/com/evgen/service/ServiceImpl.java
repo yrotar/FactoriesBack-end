@@ -1,10 +1,12 @@
-package com.evgen;
+package com.evgen.service;
 
+import com.evgen.Company;
+import com.evgen.Phone;
+import com.evgen.dao.CompanyPhoneDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
 
 import java.util.List;
 
@@ -12,10 +14,11 @@ import java.util.List;
 @Transactional
 public class ServiceImpl implements ServiceApi {
 
-    @Autowired
+
     private CompanyPhoneDao companyPhoneDao;
 
-    public void setCompanyPhoneDao(CompanyPhoneDao companyPhoneDao) {
+    @Autowired
+    public ServiceImpl(CompanyPhoneDao companyPhoneDao) {
         this.companyPhoneDao = companyPhoneDao;
     }
 
@@ -54,7 +57,7 @@ public class ServiceImpl implements ServiceApi {
     }
 
     @Override
-    public List<Phone> getPhones() throws DataAccessException {
+    public List<? extends Phone> getPhones() throws DataAccessException {
 
         return companyPhoneDao.getPhones();
     }

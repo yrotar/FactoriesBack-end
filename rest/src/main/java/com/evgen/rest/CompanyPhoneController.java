@@ -2,7 +2,7 @@ package com.evgen.rest;
 
 import com.evgen.Company;
 import com.evgen.Phone;
-import com.evgen.ServiceApi;
+import com.evgen.service.ServiceApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -73,7 +73,7 @@ public class CompanyPhoneController {
     @GetMapping(value = "/phones")
     public
     @ResponseBody
-    List<Phone> getPhones() {
+    List<? extends Phone> getPhones() {
         return service.getPhones();
     }
 

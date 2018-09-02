@@ -1,11 +1,17 @@
-package com.evgen;
+package com.evgen.service;
 
+import com.evgen.Company;
+import com.evgen.Phone;
 import org.springframework.dao.DataAccessException;
 
 import java.util.List;
 
-public interface CompanyPhoneDao {
+public interface ServiceApi {
 
+    /**
+     * @return
+     * @throws DataAccessException
+     */
     List<Company> getCompanies() throws DataAccessException;
 
     Company getCompanyById(Integer companyId) throws DataAccessException;
@@ -18,7 +24,7 @@ public interface CompanyPhoneDao {
 
     Integer deleteCompany(Integer companyId) throws DataAccessException;
 
-    List<Phone> getPhones() throws DataAccessException;
+    List<? extends Phone> getPhones() throws DataAccessException;
 
     Phone getPhoneById(Integer phoneId) throws DataAccessException;
 

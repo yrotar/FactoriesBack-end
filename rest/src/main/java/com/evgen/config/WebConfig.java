@@ -1,8 +1,5 @@
 package com.evgen.config;
 
-import com.evgen.CompanyPhoneDao;
-import com.evgen.ServiceImpl;
-import com.evgen.dao.DaoImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
@@ -23,13 +20,14 @@ import static org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType.
 @Configuration
 @EnableWebMvc
 @PropertySource("classpath:sql.properties")
-@ComponentScan(basePackages = {"com.evgen.rest","com.evgen.logger"})
+@ComponentScan(basePackages = {"com.evgen.rest", "com.evgen.logger", "com.evgen.dao", "com.evgen.service"})
 @EnableTransactionManagement
 @EnableAspectJAutoProxy
 public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Value("create-tables.sql")
     private String dbSchemaSqlScript;
+
     @Value("data-script.sql")
     private String testDataSqlScript;
 
@@ -43,22 +41,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Bean
     public PlatformTransactionManager txManager() {
-
         return new DataSourceTransactionManager(getDataSource());
-    }
-
-    @Bean
-    public CompanyPhoneDao companyPhoneDao(){
-
-        return new DaoImpl(getDataSource());
-    }
-
-    @Bean
-    public ServiceImpl serviceImpl(){
-        ServiceImpl serviceImpl = new ServiceImpl();
-        serviceImpl.setCompanyPhoneDao(companyPhoneDao());
-
-        return serviceImpl;
     }
 
     @Bean

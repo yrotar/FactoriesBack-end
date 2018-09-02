@@ -6,15 +6,15 @@ public class Company {
     private String name;
     private Integer employees;
 
-    public Company(){
+    public Company() {
     }
 
-    public Company(String name, Integer employees){
+    public Company(String name, Integer employees) {
         this.name = name;
         this.employees = employees;
     }
 
-    public Company(Integer companyId, String name, Integer employees){
+    public Company(Integer companyId, String name, Integer employees) {
         this.companyId = companyId;
         this.name = name;
         this.employees = employees;

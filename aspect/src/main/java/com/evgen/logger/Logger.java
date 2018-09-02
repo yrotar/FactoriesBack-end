@@ -15,7 +15,8 @@ public class Logger {
     private static final org.apache.logging.log4j.Logger LOGGER = LogManager.getLogger(Logger.class.getName());
 
     @Pointcut("execution(* com.evgen.*.*(..))")
-    private void ServiceMethod() { }
+    private void ServiceMethod() {
+    }
 
     @Around(value = "ServiceMethod()")
     public Object logWebServiceCall(ProceedingJoinPoint joinPoint) throws Throwable {
@@ -24,7 +25,7 @@ public class Logger {
         Object[] methodArgs = joinPoint.getArgs();
         Thread curThread = Thread.currentThread();
         LOGGER.info("From Class " + className + " method " + methodName + " was called on thread " + curThread.getName() + " with args " + Arrays.toString(methodArgs));
-        Object result =  joinPoint.proceed();
+        Object result = joinPoint.proceed();
         LOGGER.info("From Class " + className + " method " + methodName + " returned value = " + result + " on thread " + curThread.getName());
 
         return result;
