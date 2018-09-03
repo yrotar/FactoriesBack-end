@@ -12,7 +12,7 @@ public interface ServiceApi {
      * @return
      * @throws DataAccessException
      */
-    List<Company> getCompanies() throws DataAccessException;
+    List<? extends Company> getCompanies() throws DataAccessException;
 
     Company getCompanyById(Integer companyId) throws DataAccessException;
 

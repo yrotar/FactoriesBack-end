@@ -28,6 +28,12 @@ public class Phone {
         this.companyId = companyId;
     }
 
+    public Phone(Integer phoneId, String name, Integer price) {
+        this.phoneId = phoneId;
+        this.name = name;
+        this.price = price;
+    }
+
 //    public Phone(Integer phoneId, String name, Integer price, Integer companyId, String companyName) {
 //        this.phoneId = phoneId;
 //        this.name = name;

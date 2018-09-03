@@ -23,7 +23,7 @@ public class ServiceImpl implements ServiceApi {
     }
 
     @Override
-    public List<Company> getCompanies() throws DataAccessException {
+    public List<? extends Company> getCompanies() throws DataAccessException {
         return companyPhoneDao.getCompanies();
     }
 

@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface CompanyPhoneDao {
 
-    List<Company> getCompanies() throws DataAccessException;
+    List<? extends Company> getCompanies() throws DataAccessException;
 
     Company getCompanyById(Integer companyId) throws DataAccessException;
 

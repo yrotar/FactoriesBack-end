@@ -26,7 +26,7 @@ public class CompanyPhoneController {
     @GetMapping(value = "/companies")
     public
     @ResponseBody
-    List<Company> getCompanies(@RequestParam(value = "name", required = false) String name) {
+    List<? extends Company> getCompanies(@RequestParam(value = "name", required = false) String name) {
 
         if (!StringUtils.isEmpty(name)){
             return Collections.singletonList(service.getCompanyByName(name));
