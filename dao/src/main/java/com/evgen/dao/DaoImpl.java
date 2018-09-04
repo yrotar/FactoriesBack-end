@@ -178,7 +178,8 @@ public class DaoImpl implements CompanyPhoneDao {
         public CompanyWithIgnoredPhones mapRow(ResultSet resultSet, int i) throws SQLException {
             return new CompanyWithIgnoredPhones(resultSet.getInt("company_id"),
                     resultSet.getString("name"),
-                    resultSet.getInt("employees"));
+                    resultSet.getInt("employees"),
+                    resultSet.getFloat("price"));
         }
     }
 
