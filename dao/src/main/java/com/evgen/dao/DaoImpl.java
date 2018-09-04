@@ -30,6 +30,11 @@ public class DaoImpl implements CompanyPhoneDao {
     private static final String PHONE_ID = "phoneId";
     private static final String PHONE_NAME = "name";
     private static final String PHONE_PRICE = "price";
+    private static final String MIN_EMPLOYEES = "minEmployees";
+    private static final String MAX_EMPLOYEES = "maxEmployees";
+    private static final String MIN_PRICE = "minPrice";
+    private static final String MAX_PRICE = "maxPrice";
+
     @Value("${CompanyPhoneDaoSql.getCompanyById}")
     String getCompanyByIdSql;
     @Value("${CompanyPhoneDaoSql.getCompanies}")
@@ -60,8 +65,13 @@ public class DaoImpl implements CompanyPhoneDao {
     }
 
     @Override
-    public List<? extends Company> getCompanies() throws DataAccessException {
-        return namedParameterJdbcTemplate.query(getCompaniesSql, new CompanyWithIgnoredPhonesRowMapper());
+    public List<? extends Company> getCompanies(Integer minEmployees, Integer maxEmployees) throws DataAccessException {
+        MapSqlParameterSource parameterSource = new MapSqlParameterSource();
+
+        parameterSource.addValue(MIN_EMPLOYEES, minEmployees);
+        parameterSource.addValue(MAX_EMPLOYEES, maxEmployees);
+
+        return namedParameterJdbcTemplate.query(getCompaniesSql, parameterSource, new CompanyWithIgnoredPhonesRowMapper());
     }
 
     @Override
@@ -113,8 +123,12 @@ public class DaoImpl implements CompanyPhoneDao {
     }
 
     @Override
-    public List<? extends Phone> getPhones() throws DataAccessException {
-        return namedParameterJdbcTemplate.query(getPhonesSql, new PhoneWithCompanyRowMapper());
+    public List<? extends Phone> getPhones(Integer minPrice, Integer maxPrice) throws DataAccessException {
+        MapSqlParameterSource parameterSource = new MapSqlParameterSource();
+
+        parameterSource.addValue(MIN_PRICE, minPrice);
+        parameterSource.addValue(MAX_PRICE, maxPrice);
+        return namedParameterJdbcTemplate.query(getPhonesSql, parameterSource, new PhoneWithCompanyRowMapper());
     }
 
     @Override
@@ -191,7 +205,7 @@ public class DaoImpl implements CompanyPhoneDao {
             do {
                 company.getPhones().add(new Phone(
                         resultSet.getInt("phone_id"),
-                        resultSet.getString(5),
+                        resultSet.getString("phone.name"),
                         resultSet.getInt("price")
                 ));
             } while (resultSet.next());

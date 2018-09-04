@@ -23,8 +23,8 @@ public class ServiceImpl implements ServiceApi {
     }
 
     @Override
-    public List<? extends Company> getCompanies() throws DataAccessException {
-        return companyPhoneDao.getCompanies();
+    public List<? extends Company> getCompanies(Integer minEmployees, Integer maxEmployees) throws DataAccessException {
+        return companyPhoneDao.getCompanies(minEmployees, maxEmployees);
     }
 
     @Override
@@ -57,9 +57,9 @@ public class ServiceImpl implements ServiceApi {
     }
 
     @Override
-    public List<? extends Phone> getPhones() throws DataAccessException {
+    public List<? extends Phone> getPhones(Integer minPrice, Integer maxPrice) throws DataAccessException {
 
-        return companyPhoneDao.getPhones();
+        return companyPhoneDao.getPhones(minPrice, maxPrice);
     }
 
     @Override
