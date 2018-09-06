@@ -2,7 +2,10 @@ package com.evgen.rest;
 
 import com.evgen.Company;
 import com.evgen.Phone;
-import com.evgen.service.Service;
+import com.evgen.json.View;
+import com.evgen.rest.wrappers.IdWrapper;
+import com.evgen.service.CompanyPhoneService;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.StringUtils;
@@ -16,100 +19,92 @@ import java.util.List;
 public class CompanyPhoneController {
 
     private final
-    Service service;
+    CompanyPhoneService service;
 
     @Autowired
-    public CompanyPhoneController(Service service) {
+    public CompanyPhoneController(CompanyPhoneService service) {
         this.service = service;
     }
 
-    @GetMapping(value = "/companies")
-    public
+    @JsonView(View.CompanySummary.class)
+    @GetMapping("/companies")
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    List<Company> getCompanies(@RequestParam(value = "name", required = false) String name,
-                                         @RequestParam(value = "minEmployees", required = false) Integer minEmployees,
-                                         @RequestParam(value = "maxEmployees", required = false) Integer maxEmployees) {
-
-        if (!StringUtils.isEmpty(name)){
+    public List<Company> getCompanies(@RequestParam(value = "name", required = false) String name,
+                                      @RequestParam(value = "minEmployees", required = false) Integer minEmployees,
+                                      @RequestParam(value = "maxEmployees", required = false) Integer maxEmployees) {
+        if (!StringUtils.isEmpty(name)) {
             return Collections.singletonList(service.getCompanyByName(name));
         }
 
-        return service.getCompanies(minEmployees,maxEmployees);
+        return service.getCompanies(minEmployees, maxEmployees);
     }
 
-    @GetMapping(value = "/companies/{id}")
-    public
+    @JsonView(View.CompanyDetails.class)
+    @GetMapping("/companies/{id}")
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    Company getCompanyById(@PathVariable(value = "id") Integer id) {
-
+    public Company getCompanyById(@PathVariable(value = "id") Integer id) {
         return service.getCompanyById(id);
     }
 
-    @RequestMapping(value = "/companies", method = RequestMethod.POST)
+    @PostMapping("/companies")
     @ResponseStatus(HttpStatus.CREATED)
-    public
     @ResponseBody
-    Integer addCompany(@RequestBody Company company) {
-
-        return service.addCompany(company);
+    public IdWrapper addCompany(@RequestBody Company company) {
+        return IdWrapper.wrap(service.addCompany(company));
     }
 
-    @RequestMapping(value = "/companies/{id}", method = RequestMethod.PUT)
+    @PutMapping("/companies/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public
     @ResponseBody
-    Integer updateCompany(@RequestBody Company company, @PathVariable("id") Integer id) {
+    public void updateCompany(@RequestBody Company company, @PathVariable("id") Integer id) {
         company.setCompanyId(id);
 
-        return service.updateCompany(company);
+        service.updateCompany(company);
     }
 
-    @DeleteMapping(value = "/companies/{id}")
-    @ResponseStatus(value = HttpStatus.OK)
+    @DeleteMapping("/companies/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public void deleteCompany(@PathVariable(value = "id") Integer id) {
-
         service.deleteCompany(id);
     }
 
-    @GetMapping(value = "/phones")
-    public
+    @JsonView(View.PhoneSummary.class)
+    @GetMapping("/phones")
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    List<Phone> getPhones(@RequestParam(value = "minPrice", required = false) Integer minPrice,
-                                    @RequestParam(value = "maxPrice", required = false) Integer maxPrice) {
+    public List<Phone> getPhones(@RequestParam(value = "minPrice", required = false) Integer minPrice,
+                                 @RequestParam(value = "maxPrice", required = false) Integer maxPrice) {
         return service.getPhones(minPrice, maxPrice);
     }
 
-    @GetMapping(value = "/phones/{id}")
-    public
+    @JsonView(View.PhoneDetails.class)
+    @GetMapping("/phones/{id}")
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    Phone getPhoneById(@PathVariable(value = "id") Integer id) {
-
+    public Phone getPhoneById(@PathVariable(value = "id") Integer id) {
         return service.getPhoneById(id);
     }
 
-    @RequestMapping(value = "/phones", method = RequestMethod.POST)
+    @PostMapping("/phones")
     @ResponseStatus(HttpStatus.CREATED)
-    public
     @ResponseBody
-    Integer addPhone(@RequestBody Phone phone) {
-
-        return service.addPhone(phone);
+    public IdWrapper addPhone(@RequestBody Phone phone) {
+        return IdWrapper.wrap(service.addPhone(phone));
     }
 
-    @RequestMapping(value = "/phones/{id}", method = RequestMethod.PUT)
+    @PutMapping("/phones/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public
     @ResponseBody
-    Integer updatePhone(@RequestBody Phone phone, @PathVariable("id") Integer id) {
+    public void updatePhone(@RequestBody Phone phone, @PathVariable("id") Integer id) {
         phone.setPhoneId(id);
-
-        return service.updatePhone(phone);
+        service.updatePhone(phone);
     }
 
-    @DeleteMapping(value = "/phones/{id}")
-    @ResponseStatus(value = HttpStatus.OK)
+    @DeleteMapping("/phones/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public void deletePhone(@PathVariable(value = "id") Integer id) {
-
         service.deletePhone(id);
     }
 }

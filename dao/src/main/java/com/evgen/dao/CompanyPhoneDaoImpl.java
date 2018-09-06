@@ -2,16 +2,12 @@ package com.evgen.dao;
 
 import com.evgen.Company;
 import com.evgen.Phone;
-import com.evgen.dto.CompanyWithIgnoredPhones;
-import com.evgen.dto.PhoneWithCompany;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
@@ -23,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class DaoImpl implements CompanyPhoneDao {
+public class CompanyPhoneDaoImpl implements CompanyPhoneDao {
 
     private static final String COMPANY_ID = "companyId";
     private static final String COMPANY_NAME = "name";
@@ -37,31 +33,32 @@ public class DaoImpl implements CompanyPhoneDao {
     private static final String MAX_PRICE = "maxPrice";
 
     @Value("${CompanyPhoneDaoSql.getCompanyById}")
-    String getCompanyByIdSql;
+    private String getCompanyByIdSql;
     @Value("${CompanyPhoneDaoSql.getCompanies}")
-    String getCompaniesSql;
+    private String getCompaniesSql;
     @Value("${CompanyPhoneDaoSql.getCompanyByName}")
-    String getCompanyByNameSql;
+    private String getCompanyByNameSql;
     @Value("${CompanyPhoneDaoSql.addCompany}")
-    String addCompanySql;
+    private String addCompanySql;
     @Value("${CompanyPhoneDaoSql.updateCompany}")
-    String updateCompanySql;
+    private String updateCompanySql;
     @Value("${CompanyPhoneDaoSql.deleteCompany}")
-    String deleteCompanySql;
+    private String deleteCompanySql;
     @Value("${CompanyPhoneDaoSql.getPhoneById}")
-    String getPhoneByIdSql;
+    private String getPhoneByIdSql;
     @Value("${CompanyPhoneDaoSql.getPhones}")
-    String getPhonesSql;
+    private String getPhonesSql;
     @Value("${CompanyPhoneDaoSql.addPhones}")
-    String addPhonesSql;
+    private String addPhonesSql;
     @Value("${CompanyPhoneDaoSql.updatePhones}")
-    String updatePhonesSql;
+    private String updatePhonesSql;
     @Value("${CompanyPhoneDaoSql.deletePhones}")
-    String deletePhonesSql;
+    private String deletePhonesSql;
+
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Autowired
-    public DaoImpl(DataSource dataSource) {
+    public CompanyPhoneDaoImpl(DataSource dataSource) {
         namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
@@ -72,33 +69,22 @@ public class DaoImpl implements CompanyPhoneDao {
         parameterSource.addValue(MIN_EMPLOYEES, minEmployees);
         parameterSource.addValue(MAX_EMPLOYEES, maxEmployees);
 
-        return new ArrayList<Company>(
-                namedParameterJdbcTemplate.query(getCompaniesSql, parameterSource, new CompanyWithIgnoredPhonesRowMapper())
-        );
+        return namedParameterJdbcTemplate.query(getCompaniesSql, parameterSource, new CompanyWithIgnoredPhonesRowMapper());
     }
 
     @Override
     public Company getCompanyById(Integer companyId) throws DataAccessException {
-        try {
-            SqlParameterSource namedParameters = new MapSqlParameterSource(COMPANY_ID, companyId);
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource(COMPANY_ID, companyId);
 
-            return namedParameterJdbcTemplate.queryForObject(getCompanyByIdSql, namedParameters, new CompanyRowMapper());
-        } catch (EmptyResultDataAccessException emptyResultDataAccessException) {
-            return null;
-        }
+        return namedParameterJdbcTemplate.queryForObject(getCompanyByIdSql, namedParameters, new CompanyRowMapper());
 
     }
 
     @Override
     public Company getCompanyByName(String companyName) throws DataAccessException {
-        try {
-            SqlParameterSource namedParameters = new MapSqlParameterSource(COMPANY_NAME, companyName);
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource(COMPANY_NAME, companyName);
 
-            return namedParameterJdbcTemplate.queryForObject(getCompanyByNameSql, namedParameters, new CompanyRowMapper());
-        } catch (EmptyResultDataAccessException emptyResultDataAccessException) {
-            return null;
-        }
-
+        return namedParameterJdbcTemplate.queryForObject(getCompanyByNameSql, namedParameters, new CompanyRowMapper());
     }
 
     @Override
@@ -106,7 +92,6 @@ public class DaoImpl implements CompanyPhoneDao {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
 
-        parameterSource.addValue(COMPANY_ID, company.getCompanyId());
         parameterSource.addValue(COMPANY_NAME, company.getName());
         parameterSource.addValue(COMPANY_EMPLOYEES, company.getEmployees());
 
@@ -128,8 +113,7 @@ public class DaoImpl implements CompanyPhoneDao {
 
     @Override
     public Integer deleteCompany(Integer companyId) throws DataAccessException {
-        SqlParameterSource namedParameters = new MapSqlParameterSource(COMPANY_ID, companyId);
-
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource(COMPANY_ID, companyId);
         return namedParameterJdbcTemplate.update(deleteCompanySql, namedParameters);
     }
 
@@ -140,20 +124,14 @@ public class DaoImpl implements CompanyPhoneDao {
         parameterSource.addValue(MIN_PRICE, minPrice);
         parameterSource.addValue(MAX_PRICE, maxPrice);
 
-        return new ArrayList<Phone>(
-                namedParameterJdbcTemplate.query(getPhonesSql, parameterSource, new PhoneWithCompanyRowMapper())
-        );
+        return namedParameterJdbcTemplate.query(getPhonesSql, parameterSource, new PhoneWithCompanyRowMapper());
     }
 
     @Override
     public Phone getPhoneById(Integer phoneId) throws DataAccessException {
-        try {
-            SqlParameterSource namedParameters = new MapSqlParameterSource(PHONE_ID, phoneId);
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource(PHONE_ID, phoneId);
 
-            return namedParameterJdbcTemplate.queryForObject(getPhoneByIdSql, namedParameters, new PhoneWithCompanyRowMapper());
-        } catch (EmptyResultDataAccessException emptyResultDataAccessException) {
-            return null;
-        }
+        return namedParameterJdbcTemplate.queryForObject(getPhoneByIdSql, namedParameters, new PhoneWithCompanyRowMapper());
     }
 
     @Override
@@ -161,10 +139,9 @@ public class DaoImpl implements CompanyPhoneDao {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
 
-        parameterSource.addValue(PHONE_ID, phone.getPhoneId());
         parameterSource.addValue(PHONE_NAME, phone.getName());
         parameterSource.addValue(PHONE_PRICE, phone.getPrice());
-        parameterSource.addValue(COMPANY_ID, phone.getCompanyId());
+        parameterSource.addValue(COMPANY_ID, phone.getCompany().getCompanyId());
 
         namedParameterJdbcTemplate.update(addPhonesSql, parameterSource, keyHolder);
 
@@ -178,48 +155,54 @@ public class DaoImpl implements CompanyPhoneDao {
         parameterSource.addValue(PHONE_ID, phone.getPhoneId());
         parameterSource.addValue(PHONE_NAME, phone.getName());
         parameterSource.addValue(PHONE_PRICE, phone.getPrice());
-        parameterSource.addValue(COMPANY_ID, phone.getCompanyId());
+        parameterSource.addValue(COMPANY_ID, phone.getCompany().getCompanyId());
 
         return namedParameterJdbcTemplate.update(updatePhonesSql, parameterSource);
     }
 
     @Override
     public Integer deletePhone(Integer phoneId) throws DataAccessException {
-        SqlParameterSource namedParameters = new MapSqlParameterSource(PHONE_ID, phoneId);
-
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource(PHONE_ID, phoneId);
         return namedParameterJdbcTemplate.update(deletePhonesSql, namedParameters);
     }
 
 
-    private class CompanyWithIgnoredPhonesRowMapper implements RowMapper<CompanyWithIgnoredPhones> {
+    private class CompanyWithIgnoredPhonesRowMapper implements RowMapper<Company> {
 
-        public CompanyWithIgnoredPhones mapRow(ResultSet resultSet, int i) throws SQLException {
-            return new CompanyWithIgnoredPhones(resultSet.getInt("company_id"),
+        public Company mapRow(ResultSet resultSet, int i) throws SQLException {
+            return new Company(resultSet.getInt("company_id"),
                     resultSet.getString("name"),
                     resultSet.getInt("employees"),
-                    resultSet.getFloat("price"));
+                    resultSet.getFloat("avg_price"));
         }
     }
 
-    private class PhoneWithCompanyRowMapper implements RowMapper<PhoneWithCompany> {
+    private class PhoneWithCompanyRowMapper implements RowMapper<Phone> {
 
-        public PhoneWithCompany mapRow(ResultSet resultSet, int i) throws SQLException {
-            return new PhoneWithCompany(resultSet.getInt("phone_id"),
-                    resultSet.getString("name"),
+        public Phone mapRow(ResultSet resultSet, int i) throws SQLException {
+            return new Phone(resultSet.getInt("phone_id"),
+                    resultSet.getString("phone.name"),
                     resultSet.getInt("price"),
-                    resultSet.getInt("company_id"),
-                    resultSet.getString("company.name"));
+                    new Company(
+                            resultSet.getInt("company_id"),
+                            resultSet.getString("company.name")));
         }
     }
 
     private class CompanyRowMapper implements RowMapper<Company> {
 
         public Company mapRow(ResultSet resultSet, int i) throws SQLException {
-
-            Company company = new Company(resultSet.getInt("company_id"),
-                    resultSet.getString("name"),
+            Company company = new Company(
+                    resultSet.getInt("company_id"),
+                    resultSet.getString("company_name"),
                     resultSet.getInt("employees"),
-                    new ArrayList<Phone>());
+                    resultSet.getObject("avg_price", Float.class),
+                    new ArrayList<>()
+            );
+
+            if (resultSet.getObject("phone_id", Integer.class) == null) {
+                return company;
+            }
 
             do {
                 company.getPhones().add(new Phone(

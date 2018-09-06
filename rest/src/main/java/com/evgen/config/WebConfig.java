@@ -1,12 +1,12 @@
 package com.evgen.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -15,7 +15,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import javax.sql.DataSource;
 import java.util.List;
 
-import static org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType.H2;
 
 @Configuration
 @EnableWebMvc
@@ -25,16 +24,10 @@ import static org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType.
 @EnableAspectJAutoProxy
 public class WebConfig extends WebMvcConfigurerAdapter {
 
-    @Value("create-tables.sql")
-    private String dbSchemaSqlScript;
-
-    @Value("data-script.sql")
-    private String testDataSqlScript;
-
     @Bean
     public DataSource getDataSource() {
         EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
-        builder.setType(H2).addScript(dbSchemaSqlScript).addScript(testDataSqlScript);
+        builder.setType(EmbeddedDatabaseType.H2).addScript("create-tables.sql").addScript("data-script.sql");
 
         return builder.build();
     }

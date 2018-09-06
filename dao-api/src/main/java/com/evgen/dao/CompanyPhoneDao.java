@@ -2,7 +2,6 @@ package com.evgen.dao;
 
 import com.evgen.Company;
 import com.evgen.Phone;
-import com.evgen.dto.CompanyWithIgnoredPhones;
 import org.springframework.dao.DataAccessException;
 
 import java.util.List;

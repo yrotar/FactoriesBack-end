@@ -1,19 +1,40 @@
 package com.evgen;
 
+import com.evgen.json.View;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonView;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Phone {
+
+    @JsonView({
+            View.PhoneSummary.class,
+            View.CompanyDetails.class
+    })
     private Integer phoneId;
+
+    @JsonView({
+            View.PhoneSummary.class,
+            View.CompanyDetails.class
+    })
     private String name;
+
+    @JsonView({
+            View.PhoneSummary.class,
+            View.CompanyDetails.class
+    })
     private Integer price;
-    private Integer companyId;
+
+    @JsonView(View.PhoneSummary.class)
+    private Company company;
 
     public Phone() {
     }
 
-    public Phone(Integer phoneId, String name, Integer price, Integer companyId) {
+    public Phone(Integer phoneId, String name, Integer price) {
         this.phoneId = phoneId;
         this.name = name;
         this.price = price;
-        this.companyId = companyId;
     }
 
     public Phone(String name, Integer price) {
@@ -21,16 +42,19 @@ public class Phone {
         this.price = price;
     }
 
-    public Phone(String name, Integer price, Integer companyId) {
-        this.name = name;
-        this.price = price;
-        this.companyId = companyId;
-    }
-
-    public Phone(Integer phoneId, String name, Integer price) {
+    public Phone(Integer phoneId, String name, Integer price, Company company) {
         this.phoneId = phoneId;
         this.name = name;
         this.price = price;
+        this.company = company;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
     }
 
     public Integer getPhoneId() {
@@ -55,14 +79,6 @@ public class Phone {
 
     public void setPrice(Integer price) {
         this.price = price;
-    }
-
-    public Integer getCompanyId() {
-        return companyId;
-    }
-
-    public void setCompanyId(Integer companyId) {
-        this.companyId = companyId;
     }
 
 }

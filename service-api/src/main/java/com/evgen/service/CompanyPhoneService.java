@@ -6,7 +6,7 @@ import org.springframework.dao.DataAccessException;
 
 import java.util.List;
 
-public interface Service {
+public interface CompanyPhoneService {
 
     /**
      * Get companies considering parameters (minEmployees <= company.employees <= maxEmployees).
@@ -52,7 +52,7 @@ public interface Service {
      * @return Count of updated companies.
      * @throws DataAccessException
      */
-    Integer updateCompany(Company company) throws DataAccessException;
+    void updateCompany(Company company) throws DataAccessException;
 
     /**
      * Delete company from DB.
@@ -61,7 +61,7 @@ public interface Service {
      * @return Count of deleted companies.
      * @throws DataAccessException
      */
-    Integer deleteCompany(Integer companyId) throws DataAccessException;
+    void deleteCompany(Integer companyId) throws DataAccessException;
 
     /**
      * Get phones considering parameters (minPrice <= phone.price <= maxPrice).
@@ -98,7 +98,7 @@ public interface Service {
      * @return Count of updated phones.
      * @throws DataAccessException
      */
-    Integer updatePhone(Phone phone) throws DataAccessException;
+    void updatePhone(Phone phone) throws DataAccessException;
 
     /**
      * Delete phone from DB.
@@ -107,6 +107,6 @@ public interface Service {
      * @return Count of deleted phones.
      * @throws DataAccessException
      */
-    Integer deletePhone(Integer phoneId) throws DataAccessException;
+    void deletePhone(Integer phoneId) throws DataAccessException;
 
 }
