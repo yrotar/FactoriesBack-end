@@ -2,15 +2,13 @@ package com.evgen.rest;
 
 import com.evgen.Company;
 import com.evgen.Phone;
-import com.evgen.service.ServiceApi;
+import com.evgen.service.Service;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 @CrossOrigin
@@ -18,17 +16,17 @@ import java.util.List;
 public class CompanyPhoneController {
 
     private final
-    ServiceApi service;
+    Service service;
 
     @Autowired
-    public CompanyPhoneController(ServiceApi service) {
+    public CompanyPhoneController(Service service) {
         this.service = service;
     }
 
     @GetMapping(value = "/companies")
     public
     @ResponseBody
-    List<? extends Company> getCompanies(@RequestParam(value = "name", required = false) String name,
+    List<Company> getCompanies(@RequestParam(value = "name", required = false) String name,
                                          @RequestParam(value = "minEmployees", required = false) Integer minEmployees,
                                          @RequestParam(value = "maxEmployees", required = false) Integer maxEmployees) {
 
@@ -76,7 +74,7 @@ public class CompanyPhoneController {
     @GetMapping(value = "/phones")
     public
     @ResponseBody
-    List<? extends Phone> getPhones(@RequestParam(value = "minPrice", required = false) Integer minPrice,
+    List<Phone> getPhones(@RequestParam(value = "minPrice", required = false) Integer minPrice,
                                     @RequestParam(value = "maxPrice", required = false) Integer maxPrice) {
         return service.getPhones(minPrice, maxPrice);
     }

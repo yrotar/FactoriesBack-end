@@ -2,13 +2,14 @@ package com.evgen.dao;
 
 import com.evgen.Company;
 import com.evgen.Phone;
+import com.evgen.dto.CompanyWithIgnoredPhones;
 import org.springframework.dao.DataAccessException;
 
 import java.util.List;
 
 public interface CompanyPhoneDao {
 
-    List<? extends Company> getCompanies(Integer minEmployees, Integer maxEmployees) throws DataAccessException;
+    List<Company> getCompanies(Integer minEmployees, Integer maxEmployees) throws DataAccessException;
 
     Company getCompanyById(Integer companyId) throws DataAccessException;
 
@@ -20,7 +21,7 @@ public interface CompanyPhoneDao {
 
     Integer deleteCompany(Integer companyId) throws DataAccessException;
 
-    List<? extends Phone> getPhones(Integer minPrice, Integer maxPrice) throws DataAccessException;
+    List<Phone> getPhones(Integer minPrice, Integer maxPrice) throws DataAccessException;
 
     Phone getPhoneById(Integer phoneId) throws DataAccessException;
 

@@ -7,6 +7,7 @@ import com.evgen.dto.PhoneWithCompany;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -65,29 +66,41 @@ public class DaoImpl implements CompanyPhoneDao {
     }
 
     @Override
-    public List<? extends Company> getCompanies(Integer minEmployees, Integer maxEmployees) throws DataAccessException {
+    public List<Company> getCompanies(Integer minEmployees, Integer maxEmployees) throws DataAccessException {
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
 
         parameterSource.addValue(MIN_EMPLOYEES, minEmployees);
         parameterSource.addValue(MAX_EMPLOYEES, maxEmployees);
 
-        return namedParameterJdbcTemplate.query(getCompaniesSql, parameterSource, new CompanyWithIgnoredPhonesRowMapper());
+        List<Company> list = new ArrayList(namedParameterJdbcTemplate.query(getCompaniesSql, parameterSource, new CompanyWithIgnoredPhonesRowMapper()));
+
+        return list;
     }
 
     @Override
     public Company getCompanyById(Integer companyId) throws DataAccessException {
-        SqlParameterSource namedParameters = new MapSqlParameterSource(COMPANY_ID, companyId);
-        Company company = namedParameterJdbcTemplate.queryForObject(getCompanyByIdSql, namedParameters, new CompanyRowMapper());
+        try {
+            SqlParameterSource namedParameters = new MapSqlParameterSource(COMPANY_ID, companyId);
+            Company company = namedParameterJdbcTemplate.queryForObject(getCompanyByIdSql, namedParameters, new CompanyRowMapper());
 
-        return company;
+            return company;
+        } catch (EmptyResultDataAccessException emptyResultDataAccessException) {
+            return null;
+        }
+
     }
 
     @Override
     public Company getCompanyByName(String companyName) throws DataAccessException {
-        SqlParameterSource namedParameters = new MapSqlParameterSource(COMPANY_NAME, companyName);
-        Company company = namedParameterJdbcTemplate.queryForObject(getCompanyByNameSql, namedParameters, new CompanyRowMapper());
+        try {
+            SqlParameterSource namedParameters = new MapSqlParameterSource(COMPANY_NAME, companyName);
+            Company company = namedParameterJdbcTemplate.queryForObject(getCompanyByNameSql, namedParameters, new CompanyRowMapper());
 
-        return company;
+            return company;
+        } catch (EmptyResultDataAccessException emptyResultDataAccessException) {
+            return null;
+        }
+
     }
 
     @Override
@@ -123,19 +136,26 @@ public class DaoImpl implements CompanyPhoneDao {
     }
 
     @Override
-    public List<? extends Phone> getPhones(Integer minPrice, Integer maxPrice) throws DataAccessException {
+    public List<Phone> getPhones(Integer minPrice, Integer maxPrice) throws DataAccessException {
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
 
         parameterSource.addValue(MIN_PRICE, minPrice);
         parameterSource.addValue(MAX_PRICE, maxPrice);
-        return namedParameterJdbcTemplate.query(getPhonesSql, parameterSource, new PhoneWithCompanyRowMapper());
+
+        List<Phone> list = new ArrayList(namedParameterJdbcTemplate.query(getPhonesSql, parameterSource, new PhoneWithCompanyRowMapper()));
+
+        return list;
     }
 
     @Override
     public Phone getPhoneById(Integer phoneId) throws DataAccessException {
-        SqlParameterSource namedParameters = new MapSqlParameterSource(PHONE_ID, phoneId);
+        try {
+            SqlParameterSource namedParameters = new MapSqlParameterSource(PHONE_ID, phoneId);
 
-        return namedParameterJdbcTemplate.queryForObject(getPhoneByIdSql, namedParameters, new PhoneWithCompanyRowMapper());
+            return namedParameterJdbcTemplate.queryForObject(getPhoneByIdSql, namedParameters, new PhoneWithCompanyRowMapper());
+        } catch (EmptyResultDataAccessException emptyResultDataAccessException) {
+            return null;
+        }
     }
 
     @Override
