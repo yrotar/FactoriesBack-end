@@ -45,8 +45,10 @@ public class CompanyPhoneServiceImpl implements CompanyPhoneService {
     public Integer addCompany(Company company) throws DataAccessException {
         Assert.notNull(company, "Company should not be null");
         Assert.isNull(company.getCompanyId(), "Company ID should be null");
-        Assert.hasText(company.getName(), "Company should has name");
-        Assert.notNull(company.getEmployees(), "Company should has employees");
+        Assert.hasText(company.getName(), "Company should have name");
+        Assert.notNull(company.getEmployees(), "Company should have employees");
+        Assert.state(company.getEmployees() >= 1, "Company should have correct employees count.");
+
 
         return companyPhoneDao.addCompany(company);
     }
@@ -55,8 +57,8 @@ public class CompanyPhoneServiceImpl implements CompanyPhoneService {
     public void updateCompany(Company company) throws DataAccessException {
         Assert.notNull(company, "Company should not be null");
         Assert.notNull(company.getCompanyId(), "Company ID should not be null");
-        Assert.hasText(company.getName(), "Company should has name");
-        Assert.notNull(company.getEmployees(), "Company should has employees");
+        Assert.hasText(company.getName(), "Company should have name");
+        Assert.notNull(company.getEmployees(), "Company should have employees");
 
         if (companyPhoneDao.updateCompany(company) != 1) {
             throw new OperationFailedException("Operation Failed");
@@ -88,10 +90,10 @@ public class CompanyPhoneServiceImpl implements CompanyPhoneService {
     public Integer addPhone(Phone phone) throws DataAccessException {
         Assert.notNull(phone, "Phone should not be null");
         Assert.isNull(phone.getPhoneId(), "Phone ID should be null");
-        Assert.hasText(phone.getName(), "Phone should has name");
-        Assert.notNull(phone.getPrice(), "Phone should has price");
-        Assert.state(phone.getPrice() >= 1 && phone.getPrice() <= 10000, "Phone should has correct price.");
-        Assert.notNull(phone.getCompany().getCompanyId(), "Phone should has company");
+        Assert.hasText(phone.getName(), "Phone should have name");
+        Assert.notNull(phone.getPrice(), "Phone should have price");
+        Assert.state(phone.getPrice() >= 1 && phone.getPrice() <= 10000, "Phone should have correct price.");
+        Assert.notNull(phone.getCompany().getCompanyId(), "Phone should have company");
 
         return companyPhoneDao.addPhone(phone);
     }
@@ -101,10 +103,10 @@ public class CompanyPhoneServiceImpl implements CompanyPhoneService {
         Assert.notNull(phone, "Phone should not be null");
         Assert.notNull(phone.getPhoneId(), "Phone ID should not be null");
 
-        Assert.hasText(phone.getName(), "Phone should has name");
-        Assert.notNull(phone.getPrice(), "Phone should has price");
-        Assert.state(phone.getPrice() >= 1 && phone.getPrice() <= 10000, "Phone should has correct price.");
-        Assert.notNull(phone.getCompany().getCompanyId(), "Phone should has company");
+        Assert.hasText(phone.getName(), "Phone should have name");
+        Assert.notNull(phone.getPrice(), "Phone should have price");
+        Assert.state(phone.getPrice() >= 1 && phone.getPrice() <= 10000, "Phone should have correct price.");
+        Assert.notNull(phone.getCompany().getCompanyId(), "Phone should have company");
 
         if (companyPhoneDao.updatePhone(phone) != 1) {
             throw new OperationFailedException("Operation Failed");
