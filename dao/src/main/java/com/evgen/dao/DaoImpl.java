@@ -27,7 +27,7 @@ public class DaoImpl implements CompanyPhoneDao {
 
     private static final String COMPANY_ID = "companyId";
     private static final String COMPANY_NAME = "name";
-    private static final String COMPANY_EMPLOYESS = "employees";
+    private static final String COMPANY_EMPLOYEES = "employees";
     private static final String PHONE_ID = "phoneId";
     private static final String PHONE_NAME = "name";
     private static final String PHONE_PRICE = "price";
@@ -72,18 +72,17 @@ public class DaoImpl implements CompanyPhoneDao {
         parameterSource.addValue(MIN_EMPLOYEES, minEmployees);
         parameterSource.addValue(MAX_EMPLOYEES, maxEmployees);
 
-        List<Company> list = new ArrayList(namedParameterJdbcTemplate.query(getCompaniesSql, parameterSource, new CompanyWithIgnoredPhonesRowMapper()));
-
-        return list;
+        return new ArrayList<Company>(
+                namedParameterJdbcTemplate.query(getCompaniesSql, parameterSource, new CompanyWithIgnoredPhonesRowMapper())
+        );
     }
 
     @Override
     public Company getCompanyById(Integer companyId) throws DataAccessException {
         try {
             SqlParameterSource namedParameters = new MapSqlParameterSource(COMPANY_ID, companyId);
-            Company company = namedParameterJdbcTemplate.queryForObject(getCompanyByIdSql, namedParameters, new CompanyRowMapper());
 
-            return company;
+            return namedParameterJdbcTemplate.queryForObject(getCompanyByIdSql, namedParameters, new CompanyRowMapper());
         } catch (EmptyResultDataAccessException emptyResultDataAccessException) {
             return null;
         }
@@ -94,9 +93,8 @@ public class DaoImpl implements CompanyPhoneDao {
     public Company getCompanyByName(String companyName) throws DataAccessException {
         try {
             SqlParameterSource namedParameters = new MapSqlParameterSource(COMPANY_NAME, companyName);
-            Company company = namedParameterJdbcTemplate.queryForObject(getCompanyByNameSql, namedParameters, new CompanyRowMapper());
 
-            return company;
+            return namedParameterJdbcTemplate.queryForObject(getCompanyByNameSql, namedParameters, new CompanyRowMapper());
         } catch (EmptyResultDataAccessException emptyResultDataAccessException) {
             return null;
         }
@@ -110,7 +108,7 @@ public class DaoImpl implements CompanyPhoneDao {
 
         parameterSource.addValue(COMPANY_ID, company.getCompanyId());
         parameterSource.addValue(COMPANY_NAME, company.getName());
-        parameterSource.addValue(COMPANY_EMPLOYESS, company.getEmployees());
+        parameterSource.addValue(COMPANY_EMPLOYEES, company.getEmployees());
 
         namedParameterJdbcTemplate.update(addCompanySql, parameterSource, keyHolder);
 
@@ -123,7 +121,7 @@ public class DaoImpl implements CompanyPhoneDao {
 
         parameterSource.addValue(COMPANY_ID, company.getCompanyId());
         parameterSource.addValue(COMPANY_NAME, company.getName());
-        parameterSource.addValue(COMPANY_EMPLOYESS, company.getEmployees());
+        parameterSource.addValue(COMPANY_EMPLOYEES, company.getEmployees());
 
         return namedParameterJdbcTemplate.update(updateCompanySql, parameterSource);
     }
@@ -142,9 +140,9 @@ public class DaoImpl implements CompanyPhoneDao {
         parameterSource.addValue(MIN_PRICE, minPrice);
         parameterSource.addValue(MAX_PRICE, maxPrice);
 
-        List<Phone> list = new ArrayList(namedParameterJdbcTemplate.query(getPhonesSql, parameterSource, new PhoneWithCompanyRowMapper()));
-
-        return list;
+        return new ArrayList<Phone>(
+                namedParameterJdbcTemplate.query(getPhonesSql, parameterSource, new PhoneWithCompanyRowMapper())
+        );
     }
 
     @Override

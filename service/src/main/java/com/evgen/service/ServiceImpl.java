@@ -55,8 +55,7 @@ public class ServiceImpl implements Service {
             if (companyPhoneDao.getCompanyByName(company.getName()) != null)
                 throw new IllegalArgumentException("Company with name " + company.getName() + " already exist");
         } catch (DataAccessException e) {
-            e.printStackTrace();
-        }
+            }
 
         return companyPhoneDao.addCompany(company);
     }

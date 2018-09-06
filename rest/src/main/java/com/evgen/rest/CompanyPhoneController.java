@@ -64,7 +64,7 @@ public class CompanyPhoneController {
         return service.updateCompany(company);
     }
 
-    @RequestMapping(value = "/companies/{id}", method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/companies/{id}")
     @ResponseStatus(value = HttpStatus.OK)
     public void deleteCompany(@PathVariable(value = "id") Integer id) {
 
@@ -106,7 +106,7 @@ public class CompanyPhoneController {
         return service.updatePhone(phone);
     }
 
-    @RequestMapping(value = "/phones/{id}", method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/phones/{id}")
     @ResponseStatus(value = HttpStatus.OK)
     public void deletePhone(@PathVariable(value = "id") Integer id) {
 
