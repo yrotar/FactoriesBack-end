@@ -14,7 +14,7 @@ import java.util.Arrays;
 public class Logger {
     private static final org.apache.logging.log4j.Logger LOGGER = LogManager.getLogger(Logger.class.getName());
 
-    @Pointcut("execution(* com.evgen.*.*(..))")
+    @Pointcut("execution(* com.evgen.*.*.*(..))")
     private void ServiceMethod() {
     }
 

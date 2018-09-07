@@ -1,9 +1,9 @@
 INSERT INTO company (company_id, name, employees)
-VALUES (1, 'Apple', '20000000'),
-       (2, 'Xiaomi', '300000'),
-       (3, 'Samsung', '4000000'),
-       (4, 'Asus', '6000000'),
-       (5, 'Zte', '500000');
+VALUES (1, 'Apple', '2000'),
+       (2, 'Xiaomi', '1000'),
+       (3, 'Samsung', '500'),
+       (4, 'Asus', '600'),
+       (5, 'Zte', '550');
 
 INSERT INTO phone (phone_id, name, price, company_id)
 VALUES (1, 'Iphone 5',  200, 1),
