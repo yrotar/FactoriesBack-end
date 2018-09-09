@@ -42,6 +42,12 @@ public class Phone {
         this.price = price;
     }
 
+    public Phone(String name, Integer price, Company company) {
+        this.name = name;
+        this.price = price;
+        this.company = company;
+    }
+
     public Phone(Integer phoneId, String name, Integer price, Company company) {
         this.phoneId = phoneId;
         this.name = name;
