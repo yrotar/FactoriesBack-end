@@ -58,6 +58,7 @@ public class CompanyPhoneServiceImpl implements CompanyPhoneService {
         Assert.notNull(company.getCompanyId(), "Company ID should not be null");
         Assert.hasText(company.getName(), "Company should have name");
         Assert.notNull(company.getEmployees(), "Company should have employees");
+        Assert.state(company.getEmployees() >= 1, "Company should have correct employees count.");
 
         if (companyPhoneDao.updateCompany(company) != 1) {
             throw new OperationFailedException("Operation Failed");
