@@ -12,3 +12,4 @@ This project is about management of phone models and companies that produce them
 
 * ```mvn test```
 
+### My app is deployed here:  https://factories-frontend.herokuapp.com/
